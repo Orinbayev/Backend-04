@@ -1,0 +1,230 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ post.title }} | Batafsil</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: #f4f7fb;
+            color: #0f172a;
+            line-height: 1.6;
+        }
+
+        .container {
+            width: 90%;
+            max-width: 900px;
+            margin: 50px auto;
+        }
+
+        .back-link {
+            display: inline-block;
+            text-decoration: none;
+            color: #64748b;
+            font-weight: 600;
+            margin-bottom: 20px;
+            transition: 0.3s;
+        }
+
+        .back-link:hover {
+            color: #2563eb;
+        }
+
+        .post-detail-card {
+            background: #ffffff;
+            border-radius: 24px;
+            overflow: hidden;
+            box-shadow: 0 15px 40px rgba(15, 23, 42, 0.08);
+        }
+
+        .post-image-container {
+            width: 100%;
+            height: 450px;
+            overflow: hidden;
+            background: #e5e7eb;
+        }
+
+        .post-image {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.5s ease;
+        }
+
+        .post-content {
+            padding: 40px;
+        }
+
+        .post-category {
+            display: inline-block;
+            background: #eff6ff;
+            color: #2563eb;
+            padding: 8px 18px;
+            border-radius: 999px;
+            font-size: 14px;
+            font-weight: 700;
+            margin-bottom: 20px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .post-title {
+            font-size: 38px;
+            font-weight: 800;
+            margin-bottom: 12px;
+            line-height: 1.2;
+            color: #0f172a;
+        }
+
+        .post-date {
+            font-size: 15px;
+            color: #64748b;
+            margin-bottom: 30px;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .post-text {
+            font-size: 18px;
+            line-height: 1.8;
+            color: #334155;
+            white-space: pre-line;
+            margin-bottom: 40px;
+        }
+
+        .bottom-actions {
+            display: flex;
+            gap: 15px;
+            padding-top: 30px;
+            border-top: 1px solid #f1f5f9;
+        }
+
+        .btn-back {
+            flex: 2;
+            text-align: center;
+            text-decoration: none;
+            background: #2563eb;
+            color: white;
+            padding: 16px 24px;
+            border-radius: 14px;
+            font-weight: 700;
+            transition: 0.3s;
+        }
+
+        .btn-back:hover {
+            background: #1d4ed8;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(37, 99, 235, 0.2);
+        }
+
+        .edit-btn {
+            flex: 1;
+            text-align: center;
+            text-decoration: none;
+            background: #f1f5f9;
+            color: #2563eb;
+            padding: 16px 24px;
+            border-radius: 14px;
+            font-weight: 700;
+            border: 1px solid #e2e8f0;
+            transition: 0.3s;
+        }
+
+        .edit-btn:hover {
+            background: #dbeafe;
+            border-color: #2563eb;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                width: 95%;
+                margin: 20px auto;
+            }
+
+            .post-image-container {
+                height: 280px;
+            }
+
+            .post-content {
+                padding: 25px;
+            }
+
+            .post-title {
+                font-size: 28px;
+            }
+
+            .bottom-actions {
+                flex-direction: column;
+            }
+        }
+        .delete-btn {
+            flex: 1;
+            text-align: center;
+            text-decoration: none;
+            background: #f1f5f9;
+            color: #2563eb;
+            padding: 16px 24px;
+            border-radius: 14px;
+            font-weight: 700;
+            border: 1px solid #e2e8f0;
+            transition: 0.3s;
+        }
+        /* NAVBAR */
+
+
+    </style>
+</head>
+<body>
+
+
+
+    <div class="container">
+        <a href="/" class="back-link">← Asosiy sahifaga qaytish</a>
+
+        <article class="post-detail-card">
+            <div class="post-image-container">
+                {% if post.image %}
+                    <img src="{{ post.image.url }}" alt="{{ post.title }}" class="post-image">
+                {% else %}
+                    <img src="/media/image/default.jpg" alt="Default image" class="post-image">
+                {% endif %}
+            </div>
+
+            <div class="post-content">
+                <span class="post-category">{{ post.name }}</span>
+                <h1 class="post-title">{{ post.title }}</h1>
+                
+                <div class="post-date">
+                    <span>📅</span> {{ post.created|date:"d F, Y" }} | <span>⏰</span> {{ post.created|date:"H:i" }}
+                </div>
+
+                <div class="post-text">
+                    {{ post.text }}
+                </div>
+
+                <div class="bottom-actions">
+                    <div class="bottom-actions">
+    <a href="/" class="btn-back">Barcha postlarga qaytish</a> 
+
+    {% if user.is_authenticated and user.is_staff %}
+        <a href="/update_post/{{ post.id }}/" class="edit-btn">Postni tahrirlash</a>
+        <a href="/delete_post/{{ post.id }}/" class="delete-btn">Postni o'chirish</a>
+    {% endif %}
+</div>
+                </div>
+            </div>
+        </article>
+    </div>
+
+    <!-- NAVBAR -->
+</body>
+</html>

@@ -1,0 +1,229 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Music Yuklash</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            background: #f4f7fb;
+            color: #1e293b;
+        }
+
+        .container {
+            width: 90%;
+            max-width: 1200px;
+            margin: 40px auto;
+        }
+
+        .page-title {
+            text-align: center;
+            font-size: 38px;
+            font-weight: 700;
+            margin-bottom: 10px;
+            color: #0f172a;
+        }
+
+        .page-subtitle {
+            text-align: center;
+            color: #64748b;
+            margin-bottom: 40px;
+            font-size: 17px;
+        }
+
+        .upload-box {
+            background: #ffffff;
+            border-radius: 24px;
+            padding: 30px;
+            box-shadow: 0 12px 35px rgba(15, 23, 42, 0.08);
+            margin-bottom: 40px;
+        }
+
+        .upload-box h2 {
+            font-size: 28px;
+            margin-bottom: 20px;
+            color: #0f172a;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-label {
+            display: block;
+            font-size: 15px;
+            font-weight: 700;
+            margin-bottom: 8px;
+            color: #334155;
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 14px 16px;
+            border: 1px solid #dbe3ee;
+            border-radius: 14px;
+            font-size: 16px;
+            outline: none;
+            transition: 0.3s;
+            background: #f8fafc;
+        }
+
+        .form-control:focus {
+            border-color: #2563eb;
+            background: #fff;
+        }
+
+        .file-input {
+            padding: 12px;
+            background: #f8fafc;
+            border: 1px dashed #94a3b8;
+            border-radius: 14px;
+            width: 100%;
+        }
+
+        .submit-btn {
+            display: inline-block;
+            background: #2563eb;
+            color: #fff;
+            border: none;
+            border-radius: 14px;
+            padding: 14px 24px;
+            font-size: 16px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        .submit-btn:hover {
+            background: #1d4ed8;
+        }
+
+        .music-section-title {
+            font-size: 30px;
+            font-weight: 700;
+            margin-bottom: 25px;
+            color: #0f172a;
+        }
+
+        .music-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 24px;
+        }
+
+        .music-card {
+            background: #ffffff;
+            border-radius: 22px;
+            padding: 22px;
+            box-shadow: 0 12px 35px rgba(15, 23, 42, 0.08);
+            transition: 0.3s;
+        }
+
+        .music-card:hover {
+            transform: translateY(-4px);
+        }
+
+        .music-icon {
+            width: 60px;
+            height: 60px;
+            border-radius: 18px;
+            background: linear-gradient(135deg, #2563eb, #3b82f6);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 28px;
+            margin-bottom: 18px;
+        }
+
+        .music-name {
+            font-size: 22px;
+            font-weight: 700;
+            margin-bottom: 10px;
+            color: #0f172a;
+        }
+
+        .music-date {
+            font-size: 14px;
+            color: #64748b;
+            margin-bottom: 18px;
+        }
+
+        .audio-player {
+            width: 100%;
+            margin-top: 10px;
+        }
+
+        .empty-box {
+            background: #ffffff;
+            border-radius: 22px;
+            padding: 35px;
+            text-align: center;
+            color: #64748b;
+            box-shadow: 0 12px 35px rgba(15, 23, 42, 0.08);
+        }
+
+        @media (max-width: 768px) {
+            .page-title {
+                font-size: 30px;
+            }
+
+            .upload-box,
+            .music-card {
+                padding: 20px;
+            }
+
+            .music-name {
+                font-size: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <h1 class="page-title">Music Yuklash Sahifasi</h1>
+        <p class="page-subtitle">Bu yerda yangi music qo‘shishingiz va mavjud musiclarni ko‘rishingiz mumkin</p>
+
+        <!-- Music qo‘shish formasi -->
+
+        </div>
+
+        <!-- Mavjud musiclar -->
+        <h2 class="music-section-title">Mavjud Musiclar</h2>
+
+        {% if musics %}
+            <div class="music-grid">
+                {% for item in musics %}
+                    <div class="music-card">
+                        <div class="music-icon">♪</div>
+                        <h3 class="music-name">{{ item.name }}</h3>
+                        <p class="music-date">{{ item.created|date:"d M, Y | H:i" }}</p>
+
+                        {% if item.music %}
+                            <audio controls class="audio-player">
+                                <source src="{{ item.music.url }}">
+                                Brauzeringiz audio formatni qo‘llab-quvvatlamaydi.
+                            </audio>
+                        {% endif %}
+                    </div>
+                {% endfor %}
+            </div>
+        {% else %}
+            <div class="empty-box">
+                <h3>Hozircha musiclar mavjud emas</h3>
+                <p>Birinchi musicni yuqoridagi forma orqali qo‘shing.</p>
+            </div>
+        {% endif %}
+    </div>
+
+</body>
+</html>

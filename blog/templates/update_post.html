@@ -1,0 +1,253 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Postni tahrirlash | {{ form.instance.title }}</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: #f4f7fb;
+            color: #0f172a;
+            line-height: 1.6;
+        }
+
+        .container {
+            width: 90%;
+            max-width: 800px;
+            margin: 50px auto;
+        }
+
+        .back-link {
+            display: inline-block;
+            text-decoration: none;
+            color: #64748b;
+            font-weight: 600;
+            margin-bottom: 20px;
+            transition: 0.3s;
+        }
+
+        .back-link:hover {
+            color: #2563eb;
+        }
+
+        .card {
+            background: #ffffff;
+            border-radius: 24px;
+            padding: 40px;
+            box-shadow: 0 15px 40px rgba(15, 23, 42, 0.08);
+        }
+
+        .card-header {
+            margin-bottom: 30px;
+        }
+
+        .card-header h2 {
+            font-size: 32px;
+            font-weight: 800;
+            color: #0f172a;
+        }
+
+        .card-header p {
+            color: #64748b;
+            margin-top: 8px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        label {
+            display: block;
+            font-weight: 700;
+            margin-bottom: 8px;
+            color: #334155;
+            font-size: 14px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        /* Django form-control widgetlari uchun stil */
+        .form-control {
+            width: 100%;
+            padding: 14px 18px;
+            font-size: 16px;
+            border: 2px solid #e2e8f0;
+            border-radius: 12px;
+            background: #f8fafc;
+            transition: all 0.3s ease;
+            outline: none;
+        }
+
+        .form-control:focus {
+            border-color: #2563eb;
+            background: #ffffff;
+            box-shadow: 0 0 0 4px rgba(37, 99, 235, 0.1);
+        }
+
+        textarea.form-control {
+            min-height: 180px;
+            resize: vertical;
+        }
+
+        /* Rasm yuklash qismi */
+        .image-preview-container {
+            margin-top: 10px;
+            margin-bottom: 20px;
+            position: relative;
+        }
+
+        #image-preview {
+            width: 100%;
+            max-height: 300px;
+            object-fit: cover;
+            border-radius: 16px;
+            display: {% if form.instance.image %} block {% else %} none {% endif %};
+            border: 1px solid #e2e8f0;
+        }
+
+        .btn-container {
+            display: flex;
+            gap: 15px;
+            margin-top: 30px;
+        }
+
+        .btn-save {
+            flex: 2;
+            background: #2563eb;
+            color: white;
+            border: none;
+            padding: 16px;
+            border-radius: 14px;
+            font-size: 16px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        .btn-save:hover {
+            background: #1d4ed8;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(37, 99, 235, 0.3);
+        }
+
+        .btn-cancel {
+            flex: 1;
+            text-align: center;
+            text-decoration: none;
+            background: #f1f5f9;
+            color: #475569;
+            padding: 16px;
+            border-radius: 14px;
+            font-size: 16px;
+            font-weight: 700;
+            transition: 0.3s;
+        }
+
+        .btn-cancel:hover {
+            background: #e2e8f0;
+            color: #0f172a;
+        }
+
+        /* Xatoliklar uchun */
+        .errorlist {
+            color: #dc2626;
+            list-style: none;
+            font-size: 14px;
+            margin-top: 5px;
+        }
+
+        @media (max-width: 640px) {
+            .card {
+                padding: 25px;
+            }
+            .btn-container {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <a href="/" class="back-link">← Bekor qilish</a>
+
+        <div class="card">
+            <div class="card-header">
+                <h2>Postni tahrirlash</h2>
+                <p>Quyidagi maydonlarni o'zgartiring va saqlash tugmasini bosing.</p>
+            </div>
+
+            <form method="POST" enctype="multipart/form-data" id="update-form">
+                {% csrf_token %}
+
+                <div class="form-group">
+                    <label>Post sarlavhasi</label>
+                    {{ form.title }}
+                </div>
+
+                <div class="form-group">
+                    <label>Kategoriya / Muallif</label>
+                    {{ form.name }}
+                </div>
+
+                <div class="form-group">
+                    <label>Asosiy rasm</label>
+                    <div class="image-preview-container">
+                        {% if form.instance.image %}
+                            <img src="{{ form.instance.image.url }}" id="image-preview" alt="Preview">
+                        {% else %}
+                            <img src="" id="image-preview" alt="Preview">
+                        {% endif %}
+                    </div>
+                    {{ form.image }}
+                </div>
+
+                <div class="form-group">
+                    <label>Post matni</label>
+                    {{ form.text }}
+                </div>
+
+                <div class="btn-container">
+                    <button type="submit" class="btn-save">O'zgarishlarni saqlash</button>
+                    <a href="/" class="btn-cancel">Bekor qilish</a>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        // Rasm tanlanganda uni srazu ekranda ko'rsatish (Preview)
+        const imageInput = document.querySelector('input[type="file"]');
+        const preview = document.getElementById('image-preview');
+
+        imageInput.addEventListener('change', function() {
+            const file = this.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    preview.src = e.target.result;
+                    preview.style.display = 'block';
+                }
+                reader.readAsDataURL(file);
+            }
+        });
+
+        // Formani yuborishdan oldin oddiy effekt
+        const form = document.getElementById('update-form');
+        form.addEventListener('submit', function() {
+            const btn = document.querySelector('.btn-save');
+            btn.innerHTML = 'Saqlanmoqda...';
+            btn.style.opacity = '0.7';
+            btn.style.pointerEvents = 'none';
+        });
+    </script>
+</body>
+</html>

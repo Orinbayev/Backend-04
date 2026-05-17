@@ -1,0 +1,228 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Postni o‘chirish</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            min-height: 100vh;
+            background: linear-gradient(135deg, #eff6ff, #f8fafc);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            color: #0f172a;
+        }
+
+        .delete-box {
+            width: 100%;
+            max-width: 700px;
+            background: #ffffff;
+            border-radius: 28px;
+            box-shadow: 0 20px 50px rgba(15, 23, 42, 0.10);
+            overflow: hidden;
+            border: 1px solid #e2e8f0;
+        }
+
+        .delete-top {
+            background: linear-gradient(135deg, #dc2626, #b91c1c);
+            color: white;
+            padding: 28px;
+            text-align: center;
+        }
+
+        .delete-top h1 {
+            font-size: 34px;
+            margin-bottom: 8px;
+            font-weight: 800;
+        }
+
+        .delete-top p {
+            font-size: 16px;
+            line-height: 1.7;
+            color: rgba(255,255,255,0.9);
+        }
+
+        .delete-content {
+            padding: 30px;
+        }
+
+        .warning-icon {
+            width: 90px;
+            height: 90px;
+            margin: 0 auto 22px;
+            border-radius: 50%;
+            background: #fef2f2;
+            color: #dc2626;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 44px;
+            font-weight: 900;
+            border: 4px solid #fee2e2;
+        }
+
+        .question {
+            text-align: center;
+            font-size: 30px;
+            font-weight: 800;
+            line-height: 1.4;
+            margin-bottom: 14px;
+            color: #0f172a;
+        }
+
+        .desc {
+            text-align: center;
+            color: #64748b;
+            font-size: 16px;
+            line-height: 1.9;
+            max-width: 560px;
+            margin: 0 auto 28px;
+        }
+
+        .post-preview {
+            background: #f8fbff;
+            border: 1px solid #e2e8f0;
+            border-radius: 22px;
+            padding: 20px;
+            margin-bottom: 28px;
+        }
+
+        .post-preview-label {
+            font-size: 13px;
+            font-weight: 800;
+            color: #2563eb;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 10px;
+        }
+
+        .post-preview-title {
+            font-size: 26px;
+            font-weight: 800;
+            line-height: 1.4;
+            margin-bottom: 10px;
+            color: #0f172a;
+        }
+
+        .post-preview-text {
+            color: #64748b;
+            font-size: 15px;
+            line-height: 1.8;
+        }
+
+        .actions {
+            display: flex;
+            justify-content: center;
+            gap: 14px;
+            flex-wrap: wrap;
+        }
+
+        .btn {
+            text-decoration: none;
+            border: none;
+            padding: 14px 24px;
+            border-radius: 16px;
+            font-size: 16px;
+            font-weight: 800;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        .btn-delete {
+            background: linear-gradient(135deg, #dc2626, #b91c1c);
+            color: #ffffff;
+            box-shadow: 0 12px 24px rgba(220, 38, 38, 0.20);
+        }
+
+        .btn-delete:hover {
+            transform: translateY(-2px);
+        }
+
+        .btn-cancel {
+            background: #eff6ff;
+            color: #2563eb;
+            border: 1px solid #cfe0ff;
+        }
+
+        .btn-cancel:hover {
+            background: #dbeafe;
+        }
+
+        @media (max-width: 600px) {
+            .delete-top {
+                padding: 22px;
+            }
+
+            .delete-top h1 {
+                font-size: 28px;
+            }
+
+            .delete-content {
+                padding: 22px;
+            }
+
+            .question {
+                font-size: 24px;
+            }
+
+            .post-preview-title {
+                font-size: 21px;
+            }
+
+            .actions {
+                flex-direction: column;
+            }
+
+            .btn {
+                width: 100%;
+                text-align: center;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="delete-box">
+        <div class="delete-top">
+            <h1>Postni o‘chirish</h1>
+            <p>Bu amal qaytarib bo‘lmaydi. O‘chirishdan oldin tasdiqlang.</p>
+        </div>
+
+        <div class="delete-content">
+            <div class="warning-icon">!</div>
+
+            <h2 class="question">Rostdan ham bu postni o‘chirasizmi?</h2>
+
+            <p class="desc">
+                Agar <b>Ha, o‘chirish</b> tugmasini bossangiz, ushbu post bazadan o‘chib ketadi.
+                Bekor qilmoqchi bo‘lsangiz, <b>Yo‘q, bekor qilish</b> tugmasini bosing.
+            </p>
+
+            <div class="post-preview">
+                <div class="post-preview-label">O‘chirilayotgan post</div>
+                <div class="post-preview-title">{{ post.title }}</div>
+                <div class="post-preview-text">{{ post.text|truncatechars:180 }}</div>
+            </div>
+
+            <form method="POST">
+                {% csrf_token %}
+                <div class="actions">
+                    <button type="submit" class="btn btn-delete">Ha, o‘chirish</button>
+                    <a href="/" class="btn btn-cancel">Yo‘q, bekor qilish</a>
+                </div>
+            </form>
+        </div>
+    </div>
+
+</body>
+</html>

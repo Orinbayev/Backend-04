@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chiqish</title>
+
+    <style>
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background: linear-gradient(135deg, #eef2ff, #f8fafc);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+        }
+
+        .box {
+            background: white;
+            padding: 40px;
+            border-radius: 20px;
+            text-align: center;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.1);
+            width: 90%;
+            max-width: 400px;
+        }
+
+        h2 {
+            margin-bottom: 10px;
+            color: #0f172a;
+        }
+
+        p {
+            color: #64748b;
+            margin-bottom: 25px;
+        }
+
+        .buttons {
+            display: flex;
+            gap: 12px;
+            justify-content: center;
+        }
+
+        .btn {
+            padding: 12px 20px;
+            border-radius: 12px;
+            border: none;
+            cursor: pointer;
+            font-weight: 700;
+            transition: 0.3s;
+        }
+
+        .yes {
+            background: #ef4444;
+            color: white;
+        }
+
+        .yes:hover {
+            background: #dc2626;
+        }
+
+        .no {
+            background: #e2e8f0;
+            color: #0f172a;
+        }
+
+        .no:hover {
+            background: #cbd5e1;
+        }
+    </style>
+</head>
+<body>
+
+<div class="box">
+    <h2>Chiqmoqchimisiz?</h2>
+    <p>Akkauntingizdan chiqishni tasdiqlang</p>
+
+    <div class="buttons">
+        <form method="POST">
+            {% csrf_token %}
+            <button type="submit" class="btn yes">Ha, chiqish</button>
+        </form>
+
+        <a href="/" class="btn no">Yo‘q, ortga</a>
+    </div>
+</div>
+
+</body>
+</html>

@@ -1,0 +1,475 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Post qo‘shish</title>
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            background: #f5f7fb;
+            color: #0f172a;
+        }
+
+        .container {
+            width: min(1120px, 92%);
+            margin: 0 auto;
+        }
+
+        .header {
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            background: rgba(255, 255, 255, 0.92);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid #e9eef5;
+        }
+
+        .nav {
+            min-height: 78px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 20px;
+        }
+
+        .logo {
+            font-size: 40px;
+            font-weight: 800;
+            color: #2563eb;
+            letter-spacing: -1px;
+        }
+
+        .navbar {
+            display: flex;
+            align-items: center;
+            gap: 28px;
+        }
+
+        .navbar a {
+            text-decoration: none;
+            color: #0f172a;
+            font-size: 16px;
+            font-weight: 600;
+            transition: 0.25s;
+        }
+
+        .navbar a:hover {
+            color: #2563eb;
+        }
+
+        .menu-btn {
+            display: none;
+            border: none;
+            background: transparent;
+            font-size: 28px;
+            cursor: pointer;
+        }
+
+        .page-section {
+            padding: 56px 0 70px;
+        }
+
+        .page-head {
+            margin-bottom: 26px;
+        }
+
+        .page-badge {
+            display: inline-block;
+            padding: 8px 16px;
+            border-radius: 999px;
+            background: #eaf2ff;
+            color: #2563eb;
+            font-size: 14px;
+            font-weight: 700;
+            margin-bottom: 16px;
+        }
+
+        .page-title {
+            font-size: 42px;
+            line-height: 1.15;
+            margin-bottom: 12px;
+            font-weight: 800;
+            color: #0f172a;
+        }
+
+        .page-text {
+            font-size: 17px;
+            line-height: 1.8;
+            color: #475569;
+            max-width: 760px;
+        }
+
+        .form-layout {
+            display: grid;
+            grid-template-columns: 1.1fr 0.9fr;
+            gap: 26px;
+            align-items: start;
+        }
+
+        .form-card,
+        .info-card {
+            background: #ffffff;
+            border: 1px solid #e8edf5;
+            border-radius: 28px;
+            box-shadow: 0 12px 28px rgba(15, 23, 42, 0.05);
+        }
+
+        .form-card {
+            padding: 32px;
+        }
+
+        .info-card {
+            padding: 28px;
+            background: linear-gradient(135deg, #ffffff 0%, #eef4ff 100%);
+        }
+
+        .card-title {
+            font-size: 28px;
+            font-weight: 800;
+            margin-bottom: 10px;
+            color: #0f172a;
+        }
+
+        .card-text {
+            font-size: 16px;
+            line-height: 1.8;
+            color: #64748b;
+            margin-bottom: 24px;
+        }
+
+        .form-group {
+            margin-bottom: 22px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 10px;
+            font-size: 15px;
+            font-weight: 700;
+            color: #0f172a;
+        }
+
+        .form-group input,
+        .form-group textarea,
+        .form-group select {
+            width: 100%;
+            border: 1px solid #dbe6f4;
+            background: #f8fbff;
+            border-radius: 16px;
+            padding: 15px 18px;
+            font-size: 16px;
+            color: #0f172a;
+            outline: none;
+            transition: 0.25s ease;
+        }
+
+        .form-group input:focus,
+        .form-group textarea:focus,
+        .form-group select:focus {
+            border-color: #2563eb;
+            background: #ffffff;
+            box-shadow: 0 0 0 4px rgba(37, 99, 235, 0.08);
+        }
+
+        .form-group textarea {
+            min-height: 180px;
+            resize: vertical;
+        }
+
+        .form-group input[type="file"] {
+            padding: 12px 14px;
+            background: #fff;
+            cursor: pointer;
+        }
+
+        .help-text {
+            font-size: 13px;
+            color: #64748b;
+            margin-top: 8px;
+            line-height: 1.6;
+        }
+
+        .errorlist {
+            list-style: none;
+            margin-bottom: 10px;
+            padding: 12px 14px;
+            border-radius: 14px;
+            background: #fef2f2;
+            color: #dc2626;
+            font-size: 14px;
+            line-height: 1.6;
+            border: 1px solid #fecaca;
+        }
+
+        .non-field-errors {
+            margin-bottom: 18px;
+        }
+
+        .form-actions {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 14px;
+            margin-top: 10px;
+        }
+
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            text-decoration: none;
+            border: none;
+            border-radius: 14px;
+            padding: 14px 22px;
+            font-weight: 700;
+            font-size: 15px;
+            cursor: pointer;
+            transition: 0.25s;
+        }
+
+        .btn-primary {
+            background: #2563eb;
+            color: #fff;
+        }
+
+        .btn-primary:hover {
+            background: #1d4ed8;
+        }
+
+        .btn-light {
+            background: #fff;
+            color: #0f172a;
+            border: 1px solid #dbe6f4;
+        }
+
+        .btn-light:hover {
+            color: #2563eb;
+            border-color: #2563eb;
+        }
+
+        .info-list {
+            display: grid;
+            gap: 14px;
+            margin-top: 18px;
+        }
+
+        .info-item {
+            background: #ffffff;
+            border: 1px solid #e3ebf7;
+            border-radius: 18px;
+            padding: 18px;
+        }
+
+        .info-item h3 {
+            font-size: 17px;
+            margin-bottom: 8px;
+            color: #0f172a;
+        }
+
+        .info-item p {
+            color: #64748b;
+            line-height: 1.7;
+            font-size: 15px;
+        }
+
+        .footer {
+            padding: 10px 0 40px;
+        }
+
+        .footer-box {
+            border-top: 1px solid #e2e8f0;
+            padding-top: 22px;
+            text-align: center;
+            color: #64748b;
+            font-size: 15px;
+        }
+
+        @media (max-width: 900px) {
+            .form-layout {
+                grid-template-columns: 1fr;
+            }
+
+            .page-title {
+                font-size: 34px;
+            }
+        }
+
+        @media (max-width: 700px) {
+            .navbar {
+                display: none;
+            }
+
+            .menu-btn {
+                display: block;
+            }
+
+            .logo {
+                font-size: 32px;
+            }
+
+            .page-section {
+                padding: 34px 0 50px;
+            }
+
+            .page-title {
+                font-size: 28px;
+            }
+
+            .page-text {
+                font-size: 16px;
+            }
+
+            .form-card,
+            .info-card {
+                padding: 22px;
+                border-radius: 22px;
+            }
+
+            .card-title {
+                font-size: 24px;
+            }
+
+            .form-actions {
+                flex-direction: column;
+            }
+
+            .btn {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <header class="header">
+        <div class="container nav">
+            <div class="logo">BlogZone</div>
+
+            <nav class="navbar">
+                <a href="/">Bosh sahifa</a>
+                <a href="/">Postlar</a>
+                <a href="/add_post/">Post qo‘shish</a>
+            </nav>
+
+            <button class="menu-btn">☰</button>
+        </div>
+    </header>
+
+    <section class="page-section">
+        <div class="container">
+            <div class="page-head">
+                <span class="page-badge">Yangi maqola yaratish</span>
+                <h1 class="page-title">Blog uchun yangi post qo‘shing</h1>
+                <p class="page-text">
+                    Quyidagi formani to‘ldirib yangi post yaratishingiz mumkin.
+                    Sarlavha, kategoriya, matn va rasmni kiritib, postni saytingizga joylang.
+                </p>
+            </div>
+
+            <div class="form-layout">
+                <div class="form-card">
+                    <h2 class="card-title">Post ma’lumotlari</h2>
+                    <p class="card-text">
+                        Barcha maydonlarni to‘g‘ri to‘ldiring. Rasm qo‘shsangiz post yanada chiroyli ko‘rinadi.
+                    </p>
+
+                    <form method="post" enctype="multipart/form-data">
+                        {% csrf_token %}
+
+                        {% if form.non_field_errors %}
+                            <div class="non-field-errors">
+                                {{ form.non_field_errors }}
+                            </div>
+                        {% endif %}
+
+                        <div class="form-group">
+                            <label for="{{ form.title.id_for_label }}">Post nomi</label>
+                            {{ form.title.errors }}
+                            {{ form.title }}
+                            <div class="help-text">Masalan: Django bilan chiroyli blog yaratish</div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="{{ form.name.id_for_label }}">Kategoriya / Nomi</label>
+                            {{ form.name.errors }}
+                            {{ form.name }}
+                            <div class="help-text">Masalan: Dasturlash, Texnologiya, Yangilik</div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="{{ form.text.id_for_label }}">Post matni</label>
+                            {{ form.text.errors }}
+                            {{ form.text }}
+                            <div class="help-text">Bu yerga maqolaning to‘liq matnini yozing.</div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="{{ form.image.id_for_label }}">Post rasmi</label>
+                            {{ form.image.errors }}
+                            {{ form.image }}
+                            <div class="help-text">PNG, JPG yoki JPEG formatdagi rasm yuklang.</div>
+                        </div>
+
+                        <div class="form-actions">
+                            <button type="submit" class="btn btn-primary">Postni saqlash</button>
+                            <a href="/home/" class="btn btn-light">Bekor qilish</a>
+                        </div>
+                    </form>
+                </div>
+
+                <div class="info-card">
+                    <h2 class="card-title">Tavsiyalar</h2>
+                    <p class="card-text">
+                        Post sahifasi yanada professional ko‘rinishi uchun quyidagilarga e’tibor bering.
+                    </p>
+
+                    <div class="info-list">
+                        <div class="info-item">
+                            <h3>Kuchli sarlavha yozing</h3>
+                            <p>
+                                Post nomi qisqa, tushunarli va e’tibor tortadigan bo‘lsin.
+                            </p>
+                        </div>
+
+                        <div class="info-item">
+                            <h3>Matnni tartibli kiriting</h3>
+                            <p>
+                                Uzun matn yozayotgan bo‘lsangiz, fikrlarni aniq va o‘qishga qulay holatda yozing.
+                            </p>
+                        </div>
+
+                        <div class="info-item">
+                            <h3>Sifatli rasm tanlang</h3>
+                            <p>
+                                Chiroyli va mos rasm post kartasida ham, detail sahifada ham yaxshi ko‘rinadi.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-box">
+                © 2026 BlogZone. Barcha huquqlar himoyalangan.
+            </div>
+        </div>
+    </footer>
+
+</body>
+</html>
