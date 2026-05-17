@@ -23,6 +23,9 @@ env/
 .env
 .env.*
 
+# Collected static (auto-generated)
+staticfiles/
+
 # macOS
 .DS_Store
 
